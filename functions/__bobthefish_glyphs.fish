@@ -1,3 +1,4 @@
+# Modify Material Design Icons
 function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
   # Powerline glyphs
   set -x branch_glyph            \uE0A0
@@ -55,31 +56,31 @@ function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
 
   # Use prettier Nerd Fonts glyphs
   if [ "$theme_nerd_fonts" = "yes" ]
-    set branch_glyph     \uF418
-    set detached_glyph   \uF417
-    set tag_glyph        \uF412
+    set branch_glyph     \uFB2B
+    set detached_glyph   \uFC16
+    set tag_glyph        \uF918
 
-    set virtualenv_glyph \uE73C ' '
+    set virtualenv_glyph \uF81F ' '
     set ruby_glyph       \uE791 ' '
-    set go_glyph         \uE626 ' '
+    set go_glyph         \uFCD1 ' '
 
-    set vagrant_running_glyph  \uF431 # ↑ 'running'
-    set vagrant_poweroff_glyph \uF433 # ↓ 'poweroff'
-    set vagrant_aborted_glyph  \uF468 # ✕ 'aborted'
-    set vagrant_unknown_glyph  \uF421 # strange cases
+    set vagrant_running_glyph  \uF55C # ↑ 'running'
+    set vagrant_poweroff_glyph \uF544 # ↓ 'poweroff'
+    set vagrant_aborted_glyph  \uF655 # ✕ 'aborted'
+    set vagrant_unknown_glyph  \uF521 # strange cases
 
-    set git_dirty_glyph      \uF448 '' # nf-oct-pencil
-    set git_staged_glyph     \uF0C7 '' # nf-fa-save
-    set git_stashed_glyph    \uF0C6 '' # nf-fa-paperclip
-    set git_untracked_glyph  \uF128 '' # nf-fa-question
+    set git_dirty_glyph      \uF8EA '' # nf-oct-pencil
+    set git_staged_glyph     \uFD16 '' # nf-fa-save
+    set git_stashed_glyph    \uF565 '' # nf-fa-paperclip
+    set git_untracked_glyph  \uF7D6 '' # nf-fa-question
     # set git_untracked_glyph  \uF141 '' # nf-fa-ellipsis_h
 
-    set git_ahead_glyph      \uF47B # nf-oct-chevron_up
-    set git_behind_glyph     \uF47C # nf-oct-chevron_down
+    set git_ahead_glyph      \uF642 # nf-oct-chevron_up
+    set git_behind_glyph     \uF63F # nf-oct-chevron_down
 
-    set git_plus_glyph       \uF0DE # fa-sort-asc
-    set git_minus_glyph      \uF0DD # fa-sort-desc
-    set git_plus_minus_glyph \uF0DC # fa-sort
+    set git_plus_glyph       \uF85F # fa-sort-asc
+    set git_minus_glyph      \uF85C # fa-sort-desc
+    set git_plus_minus_glyph \uFA4E # fa-sort
   end
 
   # Avoid ambiguous glyphs
