@@ -85,7 +85,8 @@ function __bobthefish_pretty_parent -S -a current_dir -d 'Print a parent directo
     or set -l fish_prompt_pwd_dir_length 1
 
   # Replace $HOME with ~
-  set -l real_home ~
+  # Maybe I messup something? --Zhai2333
+  set -l real_home 
   set -l parent_dir (string replace -r '^'"$real_home"'($|/)' '~$1' (__bobthefish_dirname $current_dir))
 
   # Must check whether `$parent_dir = /` if using native dirname
