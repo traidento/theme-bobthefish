@@ -1,3 +1,4 @@
+# Proxy Mod By Zhai
 # You can override some default right prompt options in your config.fish:
 #     set -g theme_date_format "+%a %H:%M"
 
@@ -19,6 +20,7 @@ function __bobthefish_cmd_duration -S -d 'Show command duration'
 
   set_color $fish_color_normal
   set_color $fish_color_autosuggestion
+  # set_color white
 
   [ "$theme_display_date" = "no" ]
     or echo -ns ' ' $__bobthefish_left_arrow_glyph
@@ -62,9 +64,13 @@ function fish_right_prompt -d 'bobthefish is all about the right prompt'
     set __bobthefish_left_arrow_glyph '<'
   end
 
-  set_color $fish_color_autosuggestion
+  # set_color $fish_color_autosuggestion
 
   __bobthefish_cmd_duration
+  set_color white
   __bobthefish_timestamp
+  if [ $ALL_PROXY ]
+    printf " \uF805"
+  end
   set_color normal
 end
