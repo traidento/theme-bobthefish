@@ -1,4 +1,16 @@
-# bobthefish
+# bobthefish (Zhai2333 Fork)
+
+This is a fork of [oh-my-fish/theme-bobthefish](https://github.com/oh-my-fish/theme-bobthefish/).
+
+Add Material Design icons and Proxy Indicator.
+
+Install [Nerd Fonts][nerd-fonts] first and then add `set -g theme_nerd_fonts yes` into your config file.
+
+I Recommend using [Fisher](https://github.com/jorgebucaran/fisher) to install this theme.
+
+    fisher zhai2333/theme-bobthefish
+
+---
 
 `bobthefish` is a Powerline-style, Git-aware [fish][fish] theme optimized for awesome.
 
