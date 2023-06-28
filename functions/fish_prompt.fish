@@ -1004,12 +1004,15 @@ function __bobthefish_prompt_node -S -d 'Display current node version'
     set -l node_manager
     set -l node_manager_dir
 
-    if type -q nvm
-        set node_manager 'nvm'
-        set node_manager_dir $NVM_DIR
-    else if command -q fnm
-        set node_manager 'fnm'
-        set node_manager_dir $FNM_DIR
+    if type -fq nvm
+      set node_manager 'command nvm'
+      set node_manager_dir $NVM_DIR
+    else if type -q nvm
+      set node_manager 'nvm'
+      set node_manager_dir $nvm_data
+    else if type -fq fnm
+      set node_manager 'fnm'
+      set node_manager_dir $FNM_DIR
     end
 
     [ -n "$node_manager_dir" ]
