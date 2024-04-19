@@ -63,6 +63,10 @@ This theme is based loosely on [agnoster][btf-agnoster].
      * Unpushed commits (**`+`**)
      * Unpulled _and_ unpushed commits (**`±`**)
      * _Note that not all of these have been implemented for hg yet :)_
+ * Fossil status:
+     * Dirty working directory (**`*`**)
+     * Untracked files (**`…`**)
+     * Conflicts (**`!`**)
  * Abbreviated project-relative path
 
 
@@ -243,6 +247,10 @@ If you do any Git worktree shenanigans, setting this to `yes` will fix incorrect
 #### `set -g theme_display_hg yes`
 
 This feature is disabled by default. Use `yes` to enable Mercurial support in Bobthefish. If you don't use Mercurial, leave it disabled because it's ... not fast.
+
+#### `set -g theme_display_fossil yes`
+
+This feature is also disabled by default. It should be faster than Mercurial, but if you aren't using Fossil it's safe to leave disabled.
 
 #### `set -g theme_vcs_ignore_paths /some/path /some/other/path{foo,bar}`
 
