@@ -1046,11 +1046,11 @@ function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Displa
         switch $line
             case ADDED UPDATED EDITED DELETED RENAMED
                 # These can really just all be dirty, then
-                set dirty $git_dirty_glyph
+                set -f dirty $git_dirty_glyph
             case EXTRA
-                set new $git_untracked_glyph
+                set -f new $git_untracked_glyph
             case CONFLICT
-                set conflict '!'
+                set -f conflict '!'
         end
     end
 
