@@ -73,7 +73,7 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
 end
 
 function __bobthefish_fossil_branch -S -d 'Get the current fossil branch'
-    set -l branch (command fossil branch 2>/dev/null)
+    set -l branch (command fossil branch 2>/dev/null | string trim --left --chars=' *')
     echo "$branch_glyph $branch"
 end
 
@@ -1038,7 +1038,7 @@ end
 # ==============================
 
 function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Display the actual fossil state'
-    set fossil_statuses (command fossil changes --differ 2>/dev/null | cut -d' ' -f1 | sort -u)
+    set -f fossil_statuses (command fossil changes --differ 2>/dev/null | cut -d' ' -f1 | sort -u)
 
     # Fossil doesn't really stage changes; untracked files are ignored, tracked files are committed by default
     # It also syncs by default when you commit, and monitors for conflicts (which will be reported here)
@@ -1054,7 +1054,7 @@ function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Displa
         end
     end
 
-    set flags "$dirty$new$conflict"
+    set -f flags "$dirty$new$conflict"
 
     [ "$flags" ]
     and set flags " $flags"
@@ -1069,7 +1069,6 @@ function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Displa
     __bobthefish_start_segment $flag_colors
     echo -ns $fossil_glyph ' '
 
-    __bobthefish_start_segment $flag_colors
     echo -ns (__bobthefish_fossil_branch) $flags ' '
     set_color normal
 
@@ -1309,22 +1308,16 @@ function fish_prompt -d 'bobthefish, a fish theme optimized for awesome'
     set -l hg_root_dir (__bobthefish_hg_project_dir $real_pwd)
     set -l fossil_root_dir (__bobthefish_fossil_project_dir $real_pwd)
 
-    if [ "$git_root_dir" -a "$hg_root_dir" ]
-        # only show the closest parent
-        switch $git_root_dir
-            case $hg_root_dir\*
-                __bobthefish_prompt_git $git_root_dir $real_pwd
-            case \*
-                __bobthefish_prompt_hg $hg_root_dir $real_pwd
-        end
-    else if [ "$git_root_dir" ]
-        __bobthefish_prompt_git $git_root_dir $real_pwd
-    else if [ "$hg_root_dir" ]
-        __bobthefish_prompt_hg $hg_root_dir $real_pwd
-    else if [ "$fossil_root_dir" ]
-        __bobthefish_prompt_fossil $fossil_root_dir $real_pwd
-    else
-        __bobthefish_prompt_dir $real_pwd
+    # only show the closest parent
+    switch (path sort -r "$git_root_dir" "$hg_root_dir" "$fossil_root_dir")[1]
+        case ''
+            __bobthefish_prompt_dir $real_pwd
+        case "$git_root_dir"
+            __bobthefish_prompt_git $git_root_dir $real_pwd
+        case "$hg_root_dir"
+            __bobthefish_prompt_hg $hg_root_dir $real_pwd
+        case "$fossil_root_dir"
+            __bobthefish_prompt_fossil $fossil_root_dir $real_pwd
     end
 
     __bobthefish_finish_segments
