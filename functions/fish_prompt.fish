@@ -197,6 +197,7 @@ end
 
 function __bobthefish_fossil_project_dir -S -a real_pwd -d 'Print the current fossil project base directory'
     [ "$theme_display_fossil" = 'yes' ]
+    and command fossil status >/dev/null 2>/dev/null
     or return
 
     set -q theme_vcs_ignore_paths
