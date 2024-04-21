@@ -197,6 +197,7 @@ end
 
 function __bobthefish_fossil_project_dir -S -a real_pwd -d 'Print the current fossil project base directory'
     [ "$theme_display_fossil" = 'yes' ]
+    and command -q fossil
     and set -f dir (command fossil json status 2>/dev/null | grep localRoot | string split ':' -f2 | string trim --chars='"/,')
     or return
 
@@ -209,6 +210,7 @@ end
 
 function __bobthefish_hg_project_dir -S -a real_pwd -d 'Print the current hg project base directory'
     [ "$theme_display_hg" = 'yes' ]
+    and command -q hg
     or return
 
     set -q theme_vcs_ignore_paths
