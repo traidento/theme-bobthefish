@@ -120,6 +120,9 @@ function __bobthefish_git_project_dir -S -a real_pwd -d 'Print the current git p
     [ "$theme_display_git" = 'no' ]
     and return
 
+    command -q git
+    or return
+
     set -q theme_vcs_ignore_paths
     and [ (__bobthefish_ignore_vcs_dir $real_pwd) ]
     and return
@@ -802,9 +805,9 @@ function __bobthefish_prompt_rubies -S -d 'Display current Ruby information'
     and return
 
     set -l ruby_version
-    if type -fq rvm-prompt
+    if command -q rvm-prompt
         set ruby_version (__bobthefish_rvm_info)
-    else if type -fq rbenv
+    else if command -q rbenv
         set ruby_version (rbenv version-name)
         # Don't show global ruby version...
         set -q RBENV_ROOT
@@ -818,9 +821,9 @@ function __bobthefish_prompt_rubies -S -d 'Display current Ruby information'
 
         [ "$ruby_version" = "$global_ruby_version" ]
         and return
-    else if type -q chruby # chruby is implemented as a function, so omitting the -f is intentional
+    else if type -q chruby # chruby is implemented as a function, so using type -q is intentional
         set ruby_version $RUBY_VERSION
-    else if type -fq asdf
+    else if command -q asdf
         set -l asdf_current_ruby (asdf current ruby 2>/dev/null)
         or return
 
@@ -869,7 +872,7 @@ function __bobthefish_prompt_golang -S -a real_pwd -d 'Display current Go inform
     set -l no_go_installed "0"
     set -l actual_go_version "0"
     set -l high_enough_version "0"
-    if type -fq go
+    if command -q go
         set actual_go_version (go version | string match -r 'go version go(\\d+\\.\\d+(?:\\.\\d+)?)' -g)
         if printf "%s\n%s"  "$gomod_version" "$actual_go_version" | sort --check=silent --version-sort
             set high_enough_version "1"
@@ -911,7 +914,7 @@ function __bobthefish_virtualenv_python_version -S -d 'Get current Python versio
 end
 
 function __bobthefish_prompt_virtualfish -S -d "Display current Python virtual environment (only for virtualfish, virtualenv's activate.fish changes prompt by itself) or conda environment."
-    type -fq python
+    command -q python
     or return
 
     [ "$theme_display_virtualenv" = 'no' -o -z "$VIRTUAL_ENV" -a -z "$CONDA_DEFAULT_ENV" ]
@@ -1002,11 +1005,11 @@ function __bobthefish_prompt_node -S -d 'Display current node version'
     set -l node_manager_dir
 
     if type -q nvm
-      set node_manager 'nvm'
-      set node_manager_dir $NVM_DIR
-    else if type -fq fnm
-      set node_manager 'fnm'
-      set node_manager_dir $FNM_DIR
+        set node_manager 'nvm'
+        set node_manager_dir $NVM_DIR
+    else if command -q fnm
+        set node_manager 'fnm'
+        set node_manager_dir $FNM_DIR
     end
 
     [ -n "$node_manager_dir" ]
