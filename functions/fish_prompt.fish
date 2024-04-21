@@ -72,6 +72,11 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
     end
 end
 
+function __bobthefish_fossil_branch -S -d 'Get the current fossil branch'
+    set -l branch (command fossil branch 2>/dev/null | string trim --left --chars=' *')
+    echo "$branch_glyph $branch"
+end
+
 function __bobthefish_hg_branch -S -d 'Get the current hg branch'
     set -l branch (command hg branch 2>/dev/null)
     set -l book (command hg book | command grep \* | cut -d\  -f3)
@@ -188,6 +193,18 @@ function __bobthefish_git_project_dir -S -a real_pwd -d 'Print the current git p
         case $project_dir/\*
             echo $project_dir
     end
+end
+
+function __bobthefish_fossil_project_dir -S -a real_pwd -d 'Print the current fossil project base directory'
+    [ "$theme_display_fossil" = 'yes' ]
+    and set -f dir (command fossil json status 2>/dev/null | grep localRoot | string split ':' -f2 | string trim --chars='"/,')
+    or return
+
+    set -q theme_vcs_ignore_paths
+    and [ (__bobthefish_ignore_vcs_dir $real_pwd) ]
+    and return
+
+    echo "/$dir"
 end
 
 function __bobthefish_hg_project_dir -S -a real_pwd -d 'Print the current hg project base directory'
@@ -1020,6 +1037,53 @@ end
 # VCS segments
 # ==============================
 
+function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Display the actual fossil state'
+    set -f fossil_statuses (command fossil changes --differ 2>/dev/null | cut -d' ' -f1 | sort -u)
+
+    # Fossil doesn't really stage changes; untracked files are ignored, tracked files are committed by default
+    # It also syncs by default when you commit, and monitors for conflicts (which will be reported here)
+    for line in $fossil_statuses
+        switch $line
+            case ADDED UPDATED EDITED DELETED RENAMED
+                # These can really just all be dirty, then
+                set -f dirty $git_dirty_glyph
+            case EXTRA
+                set -f new $git_untracked_glyph
+            case CONFLICT
+                set -f conflict '!'
+        end
+    end
+
+    set -f flags "$dirty$new$conflict"
+
+    [ "$flags" ]
+    and set flags " $flags"
+
+    set -l flag_colors $color_repo
+    if [ "$dirty" ]
+        set flag_colors $color_repo_dirty
+    end
+
+    __bobthefish_path_segment $fossil_root_dir project
+
+    __bobthefish_start_segment $flag_colors
+    echo -ns $fossil_glyph ' '
+
+    echo -ns (__bobthefish_fossil_branch) $flags ' '
+    set_color normal
+
+    set -l project_pwd (__bobthefish_project_pwd $fossil_root_dir $real_pwd)
+    if [ "$project_pwd" ]
+        if [ -w "$real_pwd" ]
+            __bobthefish_start_segment $color_path
+        else
+            __bobthefish_start_segment $color_path_nowrite
+        end
+
+        echo -ns $project_pwd ' '
+    end
+end
+
 function __bobthefish_prompt_hg -S -a hg_root_dir -a real_pwd -d 'Display the actual hg state'
     set -l dirty (command hg stat; or echo -n '*')
 
@@ -1242,21 +1306,18 @@ function fish_prompt -d 'bobthefish, a fish theme optimized for awesome'
     # VCS
     set -l git_root_dir (__bobthefish_git_project_dir $real_pwd)
     set -l hg_root_dir (__bobthefish_hg_project_dir $real_pwd)
+    set -l fossil_root_dir (__bobthefish_fossil_project_dir $real_pwd)
 
-    if [ "$git_root_dir" -a "$hg_root_dir" ]
-        # only show the closest parent
-        switch $git_root_dir
-            case $hg_root_dir\*
-                __bobthefish_prompt_git $git_root_dir $real_pwd
-            case \*
-                __bobthefish_prompt_hg $hg_root_dir $real_pwd
-        end
-    else if [ "$git_root_dir" ]
-        __bobthefish_prompt_git $git_root_dir $real_pwd
-    else if [ "$hg_root_dir" ]
-        __bobthefish_prompt_hg $hg_root_dir $real_pwd
-    else
-        __bobthefish_prompt_dir $real_pwd
+    # only show the closest parent
+    switch (path sort -r "$git_root_dir" "$hg_root_dir" "$fossil_root_dir")[1]
+        case ''
+            __bobthefish_prompt_dir $real_pwd
+        case "$git_root_dir"
+            __bobthefish_prompt_git $git_root_dir $real_pwd
+        case "$hg_root_dir"
+            __bobthefish_prompt_hg $hg_root_dir $real_pwd
+        case "$fossil_root_dir"
+            __bobthefish_prompt_fossil $fossil_root_dir $real_pwd
     end
 
     __bobthefish_finish_segments
