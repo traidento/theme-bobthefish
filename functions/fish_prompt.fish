@@ -1255,6 +1255,15 @@ function __bobthefish_prompt_dir -S -a real_pwd -d 'Display a shortened form of 
     __bobthefish_path_segment "$real_pwd" pwd
 end
 
+# Polyfill for fish < 3.5.0
+function __bobthefish_closest_parent -S
+    if builtin -q path
+        echo (path sort -r $argv)[1]
+    else
+        string join \n $argv | awk '{ print length, $0 }' | sort -nsr | head -1 | cut -d" " -f2-
+    end
+end
+
 
 # ==============================
 # Apply theme
@@ -1314,7 +1323,7 @@ function fish_prompt -d 'bobthefish, a fish theme optimized for awesome'
     set -l fossil_root_dir (__bobthefish_fossil_project_dir $real_pwd)
 
     # only show the closest parent
-    switch (path sort -r "$git_root_dir" "$hg_root_dir" "$fossil_root_dir")[1]
+    switch (__bobthefish_closest_parent "$git_root_dir" "$hg_root_dir" "$fossil_root_dir")
         case ''
             __bobthefish_prompt_dir $real_pwd
         case "$git_root_dir"
