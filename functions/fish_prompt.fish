@@ -1258,7 +1258,7 @@ end
 # Polyfill for fish < 3.5.0
 function __bobthefish_closest_parent -S
     if builtin -q path
-        echo (path sort -r $argv)[1]
+        echo (builtin path sort -r $argv)[1]
     else
         string join \n $argv | awk '{ print length, $0 }' | sort -nsr | head -1 | cut -d" " -f2-
     end
