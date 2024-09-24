@@ -873,7 +873,7 @@ function __bobthefish_prompt_golang -S -a real_pwd -d 'Display current Go inform
     set -l actual_go_version "0"
     set -l high_enough_version "0"
     if command -q go
-        set actual_go_version (go version | string match -r 'go version go(\\d+\\.\\d+(?:\\.\\d+)?)' -g)
+        set actual_go_version (go version | string replace --filter -r 'go version go(\\d+\\.\\d+(?:\\.\\d+)?).*' '$1')
         if printf "%s\n%s"  "$gomod_version" "$actual_go_version" | sort --check=silent --version-sort
             set high_enough_version "1"
         end
