@@ -73,7 +73,7 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
 end
 
 function __bobthefish_fossil_branch -S -d 'Get the current fossil branch'
-    set -l branch (command fossil branch 2>/dev/null | string trim --left --chars=' *')
+    set -l branch (command fossil branch current 2>/dev/null)
     echo "$branch_glyph $branch"
 end
 
