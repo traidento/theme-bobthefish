@@ -25,7 +25,7 @@ function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
   set -x nix_glyph               ''
 
   # Desk glyphs
-  set -x desk_glyph              \u25F2
+  set -x desk_glyph              \u25F2 ' '
 
   # Kubernetes glyphs
   set -x k8s_glyph               \u2388 # '⎈'
@@ -64,36 +64,41 @@ function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
 
   # Use prettier Nerd Fonts glyphs
   if [ "$theme_nerd_fonts" = "yes" ]
-    set private_glyph    \uF023 ' ' # nf-fa-lock
+    set superuser_glyph    \UF0423 '' # 󰐣 'nf-md-pound'
+    set bg_job_glyph       \UF003F '' # 󰀿 'nf-md-arrange_send_backward'
+    set nonzero_exit_glyph \UF05D6 "$last_status " # 󰗖 'nf-md-alert_circle_outline'
 
-    set branch_glyph     \uF418
-    set detached_glyph   \uF417
-    set tag_glyph        \uF412
+    set private_glyph    \UF0341 '' # 󰍁 'nf-md-lock_outline'
 
-    set nix_glyph        \uF313 ' ' # nf-linux-nixos
-    set virtualenv_glyph \uE73C ' '
-    set ruby_glyph       \uE791 ' '
-    set go_glyph         \uE626 ' '
-    set node_glyph       \uE718 ' '
+    set branch_glyph     \UF062C # 󰘬 'nf-md-source_branch'
+    set detached_glyph   \UF0718 # 󰜘 'nf-md-source_commit'
+    set tag_glyph        \UF04FC # 󰓼 'nf-md-tag_outline'
 
-    set vagrant_running_glyph  \uF431 # ↑ 'running'
-    set vagrant_poweroff_glyph \uF433 # ↓ 'poweroff'
-    set vagrant_aborted_glyph  \uF468 # ✕ 'aborted'
-    set vagrant_unknown_glyph  \uF421 # strange cases
+    set nix_glyph        \UF1105 ' ' # 󱄅 'nf-md-nix'
+    set virtualenv_glyph \UF0320 ' ' # 󰌠 'nf-md-language_python'
+    set pypy_glyph       \UF150E ' ' # 󱔎 'nf-md-snake'
+    set ruby_glyph       \UF0D2D ' ' # 󰴭 'nf-md-language_ruby'
+    set go_glyph         \UF07D3 ' ' # 󰟓 'nf-md-language_go'
+    set node_glyph       \UF0399 ' ' # 󰎙 'nf-md-nodejs'
+    set k8s_glyph        \UF10FE '' # 󱃾 'nf-md-kubernetes'
 
-    set git_dirty_glyph      \uF448 '' # nf-oct-pencil
-    set git_staged_glyph     \uF0C7 '' # nf-fa-save
-    set git_stashed_glyph    \uF0C6 '' # nf-fa-paperclip
-    set git_untracked_glyph  \uF128 '' # nf-fa-question
-    # set git_untracked_glyph  \uF141 '' # nf-fa-ellipsis_h
-    set fossil_glyph \UF00B9 # nf-md-bone
+    set vagrant_running_glyph  \UF048B '' # 󰒋 'nf-md-server'
+    set vagrant_poweroff_glyph \UF048F '' # 󰒏 'nf-md-server_off'
+    set vagrant_aborted_glyph  \UF09E0 '' # 󰧠 'nf-md-cloud_alert'
+    set vagrant_unknown_glyph  \UF0A39 '' # 󰨹 'nf-md-cloud_question'
 
-    set git_ahead_glyph      \uF47B # nf-oct-chevron_up
-    set git_behind_glyph     \uF47C # nf-oct-chevron_down
+    set git_dirty_glyph      \UF03EB '' # 󰏫 'nf-md-pencil'
+    set git_staged_glyph     \UF0818 '' # 󰠘 'nf-md-content_save_outline'
+    set git_stashed_glyph    \UF03D4 '' # 󰏔 'nf-md-package_down'
+    set git_untracked_glyph  \UF02D7 '' # 󰋗 'nf-md-help_circle'
+    set fossil_glyph         \UF00B9 '' # 󰂹 'nf-md-bone'
 
-    set git_plus_glyph       \uF0DE # fa-sort-asc
-    set git_minus_glyph      \uF0DD # fa-sort-desc
-    set git_plus_minus_glyph \uF0DC # fa-sort
+    set git_ahead_glyph      \UF0143 # 󰅃 'nf-md-chevron_up'
+    set git_behind_glyph     \UF0140 # 󰅀 'nf-md-chevron_down'
+
+    set git_plus_glyph       \UF0415 # 󰐕 'nf-md-plus'
+    set git_minus_glyph      \UF0374 # 󰍴 'nf-md-minus'
+    set git_plus_minus_glyph \UF0992 # 󰦒 'nf-md-plus_minus'
   end
 
   # Avoid ambiguous glyphs
