@@ -138,7 +138,7 @@ function bobthefish_display_colors -a color_scheme -d 'Print example prompt colo
   __bobthefish_finish_segments
 
   __bobthefish_start_segment $color_nvm
-  echo -ns $ruby_glyph nvm ' '
+  echo -ns $node_glyph nvm ' '
   __bobthefish_finish_segments
 
   __bobthefish_start_segment $color_virtualfish
