@@ -973,7 +973,8 @@ function __bobthefish_prompt_virtualfish -S -d "Display current Python virtual e
 
     if [ "$version_glyph" ]
         __bobthefish_start_segment $color_virtualfish
-        if string match -q "Python 2*" (python --version 2>&1 | string trim)
+        set -l python_version (python --version 2>&1 | string join ' ')
+        if string match -q "Python 2*" $python_version; or string match -q "Python *PyPy *" $python_version
             set prompt_style verbose
         else if [ "$theme_display_virtualenv" = verbose ]
             set prompt_style verbose
