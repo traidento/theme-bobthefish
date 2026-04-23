@@ -733,6 +733,14 @@ if not type -q prompt_hostname
     end
 end
 
+function __bobthefish_prompt_host
+    if test -n "$CONTAINER_ID"
+        echo -ns "($CONTAINER_ID)"
+    else
+        prompt_hostname
+    end
+end
+
 function __bobthefish_prompt_user -S -d 'Display current user and hostname'
     [ "$theme_display_user" = yes -o \( "$theme_display_user" != no -a -n "$SSH_CLIENT" \) -o \( -n "$default_user" -a "$USER" != "$default_user" \) ]
     and set -l display_user
@@ -740,7 +748,7 @@ function __bobthefish_prompt_user -S -d 'Display current user and hostname'
     [ "$theme_display_sudo_user" = yes -a -n "$SUDO_USER" ]
     and set -l display_sudo_user
 
-    [ "$theme_display_hostname" = yes -o \( "$theme_display_hostname" != no -a -n "$SSH_CLIENT" \) ]
+    [ "$theme_display_hostname" = yes -o \( "$theme_display_hostname" != no -a -n "$SSH_CLIENT$CONTAINER_ID" \) ]
     and set -l display_hostname
 
     if set -q display_user
@@ -766,10 +774,10 @@ function __bobthefish_prompt_user -S -d 'Display current user and hostname'
             # (so we can have a bold username and non-bold hostname)
             set_color normal
             set_color -b $color_hostname[1] $color_hostname[2..-1]
-            echo -ns '@' (prompt_hostname)
+            echo -ns '@' (__bobthefish_prompt_host)
         else
             __bobthefish_start_segment $color_hostname
-            echo -ns (prompt_hostname)
+            echo -ns (__bobthefish_prompt_host)
         end
     end
 
