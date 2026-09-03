@@ -70,17 +70,17 @@ function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
 
         set private_glyph \UF0341 '' # 󰍁 'nf-md-lock_outline'
 
-        set branch_glyph \UF062C # 󰘬 'nf-md-source_branch'
-        set detached_glyph \UF0718 # 󰜘 'nf-md-source_commit'
-        set tag_glyph \UF04FC # 󰓼 'nf-md-tag_outline'
+        set branch_glyph \UF062C '' # 󰘬 'nf-md-source_branch'
+        set detached_glyph \UF0718 '' # 󰜘 'nf-md-source_commit'
+        set tag_glyph \UF04FC '' # 󰓼 'nf-md-tag_outline'
 
         set nix_glyph \UF1105 ' ' # 󱄅 'nf-md-nix'
         set virtualenv_glyph \UF0320 ' ' # 󰌠 'nf-md-language_python'
         set pypy_glyph \UF150E ' ' # 󱔎 'nf-md-snake'
         set ruby_glyph \UF0D2D ' ' # 󰴭 'nf-md-language_ruby'
-        set go_glyph \UF07D3 ' ' # 󰟓 'nf-md-language_go'
-        set node_glyph \UF0399 ' ' # 󰎙 'nf-md-nodejs'
-        set k8s_glyph \UF10FE '' # 󱃾 'nf-md-kubernetes'
+        set go_glyph 'go'
+        set node_glyph \UF02D9 ' ' # 󰋙 'nf-md-hexagon_outline'
+        set k8s_glyph \UF0833 ' ' # 󰠳 'nf-md-ship_wheel'
 
         set vagrant_running_glyph \UF048B '' # 󰒋 'nf-md-server'
         set vagrant_poweroff_glyph \UF048F '' # 󰒏 'nf-md-server_off'
