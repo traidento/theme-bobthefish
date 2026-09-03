@@ -163,7 +163,7 @@ function bobthefish_display_colors -a color_scheme -d 'Print example prompt colo
     __bobthefish_finish_segments
 
     __bobthefish_start_segment $color_k8s
-    echo -ns $k8s_glyph ' k8s-context'
+    echo -ns $k8s_glyph 'k8s-context'
     __bobthefish_finish_segments
 
     echo -e "\n"
