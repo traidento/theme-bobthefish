@@ -93,12 +93,12 @@ function __bobthefish_glyphs -S -d 'Define glyphs used by bobthefish'
         set git_untracked_glyph \UF02D7 '' # 󰋗 'nf-md-help_circle'
         set fossil_glyph \UF00B9 '' # 󰂹 'nf-md-bone'
 
-        set git_ahead_glyph \UF0143 # 󰅃 'nf-md-chevron_up'
-        set git_behind_glyph \UF0140 # 󰅀 'nf-md-chevron_down'
+        set git_ahead_glyph \UF0143 '' # 󰅃 'nf-md-chevron_up'
+        set git_behind_glyph \UF0140 '' # 󰅀 'nf-md-chevron_down'
 
-        set git_plus_glyph \UF0415 # 󰐕 'nf-md-plus'
-        set git_minus_glyph \UF0374 # 󰍴 'nf-md-minus'
-        set git_plus_minus_glyph \UF0992 # 󰦒 'nf-md-plus_minus'
+        set git_plus_glyph \UF0415 '' # 󰐕 'nf-md-plus'
+        set git_minus_glyph \UF0374 '' # 󰍴 'nf-md-minus'
+        set git_plus_minus_glyph \UF0992 '' # 󰦒 'nf-md-plus_minus'
     end
 
     # Avoid ambiguous glyphs

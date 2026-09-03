@@ -66,8 +66,12 @@ function __bobthefish_version_at_least -S -a required -a actual -d 'Compare dott
 end
 
 function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish)'
+    set -l flags $argv[1]
+    [ -n "$flags" ]
+    and set -l flags_padding ' '
+
     set -l tag (command git describe --tags --exact-match 2>/dev/null)
-    and echo "$tag_glyph $tag "
+    and echo "$tag_glyph$tag "
 
     set -l branch (command git symbolic-ref --quiet --short HEAD 2>/dev/null)
     and begin
@@ -76,7 +80,7 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
 
         [ "$theme_display_git_master_branch" != yes -a "$theme_display_git_default_branch" != yes ]
         and contains $branch $theme_git_default_branches
-        and echo $branch_glyph
+        and echo "$branch_glyph$flags"
         and return
 
         # truncate the middle of the branch name, but only if it's 25+ characters
@@ -84,26 +88,64 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
         [ "$theme_use_abbreviated_branch_name" = yes ]
         and set truncname (string replace -r '^(.{17}).{3,}(.{5})$' "\$1…\$2" $branch)
 
-        echo $branch_glyph $truncname
+        echo "$branch_glyph$truncname$flags_padding$flags"
         and return
     end
 
     # If we've already shown a tag we don't need to show a detached branch
     if [ -z "$tag" ]
         set -l branch (command git rev-parse --short HEAD 2>/dev/null)
-        echo "$detached_glyph $branch"
+        echo "$detached_glyph$branch$flags_padding$flags"
+    else
+        echo "$flags"
     end
 end
 
 function __bobthefish_fossil_branch -S -d 'Get the current fossil branch'
+    set -l flags $argv[1]
+    set -l flags_padding ''
+    [ -n "$flags" ]
+    and set -l flags_padding ' '
+
+    echo "$branch_glyph"
+
     set -l branch (command fossil branch current 2>/dev/null)
-    echo "$branch_glyph $branch"
+    [ -n "$theme_fossil_default_branches" ]
+    or set -l theme_fossil_default_branches trunk (command fossil setting --value main-branch 2>/dev/null)
+
+    [ "$theme_display_fossil_default_branch" != yes ]
+    and contains $branch $theme_fossil_default_branches
+    and echo "$flags"
+    and return
+
+    echo "$branch$flags_padding$flags"
 end
 
 function __bobthefish_hg_branch -S -d 'Get the current hg branch'
+    set -l flags $argv[1]
+    set -l flags_padding ''
+    [ -n "$flags" ]
+    and set -l flags_padding ' '
+
     set -l branch (command hg branch 2>/dev/null)
     set -l book (command hg book 2>/dev/null | string replace --filter -r '^\s*\*\s+(\S+).*' '$1')
-    echo "$branch_glyph $branch @ $book"
+
+    echo "$branch_glyph"
+
+    if [ "$theme_display_hg_default_branch" = yes ]; or [ "$branch" != default ]
+        echo "$branch"
+
+        if [ -n "$book" ]
+            echo " @$book$flags_padding"
+        else
+            echo "$flags_padding"
+        end
+    else
+        [ -n "$book" ]
+        and echo "@$book$flags_padding"
+    end
+
+    echo "$flags"
 end
 
 function __bobthefish_pretty_parent -S -a child_dir -d 'Print a parent directory, shortened to fit the prompt'
@@ -1121,9 +1163,6 @@ function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Displa
 
     set -f flags "$dirty$new$conflict"
 
-    [ "$flags" ]
-    and set flags " $flags"
-
     set -l flag_colors $color_repo
     if [ "$dirty" ]
         set flag_colors $color_repo_dirty
@@ -1132,9 +1171,10 @@ function __bobthefish_prompt_fossil -S -a fossil_root_dir -a real_pwd -d 'Displa
     __bobthefish_path_segment $fossil_root_dir project
 
     __bobthefish_start_segment $flag_colors
-    echo -ns $fossil_glyph ' '
+    echo -ns "$fossil_glyph" ' '
 
-    echo -ns (__bobthefish_fossil_branch) $flags ' '
+    __bobthefish_start_segment $flag_colors
+    echo -ns (__bobthefish_fossil_branch $flags) ' '
     set_color normal
 
     set -l project_pwd (__bobthefish_project_pwd $fossil_root_dir $real_pwd)
@@ -1153,8 +1193,6 @@ function __bobthefish_prompt_hg -S -a hg_root_dir -a real_pwd -d 'Display the ac
     set -l dirty (command hg stat; or echo -n '*')
 
     set -l flags "$dirty"
-    [ "$flags" ]
-    and set flags ''
 
     set -l flag_colors $color_repo
     if [ "$dirty" ]
@@ -1164,10 +1202,10 @@ function __bobthefish_prompt_hg -S -a hg_root_dir -a real_pwd -d 'Display the ac
     __bobthefish_path_segment $hg_root_dir project
 
     __bobthefish_start_segment $flag_colors
-    echo -ns $hg_glyph ' '
+    echo -ns "$hg_glyph" ' '
 
     __bobthefish_start_segment $flag_colors
-    echo -ns (__bobthefish_hg_branch) $flags ' '
+    echo -ns (__bobthefish_hg_branch $flags) ' '
     set_color normal
 
     set -l project_pwd (__bobthefish_project_pwd $hg_root_dir $real_pwd)
@@ -1220,9 +1258,6 @@ function __bobthefish_prompt_git -S -a git_root_dir -a real_pwd -d 'Display the 
 
     set -l flags "$dirty$staged$stashed$ahead$new"
 
-    [ "$flags" ]
-    and set flags " $flags"
-
     set -l flag_colors $color_repo
     if [ "$dirty" ]
         set flag_colors $color_repo_dirty
@@ -1233,7 +1268,7 @@ function __bobthefish_prompt_git -S -a git_root_dir -a real_pwd -d 'Display the 
     __bobthefish_path_segment $git_root_dir project
 
     __bobthefish_start_segment $flag_colors
-    echo -ns (__bobthefish_git_branch) $flags ' '
+    echo -ns (__bobthefish_git_branch $flags) ' '
     set_color normal
 
     if [ "$theme_git_worktree_support" != yes ]

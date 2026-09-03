@@ -82,7 +82,7 @@ function bobthefish_display_colors -a color_scheme -d 'Print example prompt colo
     set_color -b $color_path_basename
     echo -ns basename ' '
     __bobthefish_start_segment $color_repo
-    echo -n "$branch_glyph repo $git_stashed_glyph "
+    echo -n "$branch_glyph""repo "
     __bobthefish_finish_segments
     echo
 
@@ -91,7 +91,7 @@ function bobthefish_display_colors -a color_scheme -d 'Print example prompt colo
     set_color -b $color_path_basename
     echo -ns basename ' '
     __bobthefish_start_segment $color_repo_dirty
-    echo -n "$tag_glyph repo_dirty $git_dirty_glyph "
+    echo -n "$tag_glyph""repo_dirty $git_stashed_glyph$git_dirty_glyph "
     __bobthefish_finish_segments
     echo
 
@@ -100,7 +100,7 @@ function bobthefish_display_colors -a color_scheme -d 'Print example prompt colo
     set_color -b $color_path_basename
     echo -ns basename ' '
     __bobthefish_start_segment $color_repo_staged
-    echo -n "$detached_glyph repo_staged $git_staged_glyph "
+    echo -n "$detached_glyph""repo_staged $git_staged_glyph "
     __bobthefish_finish_segments
     echo
 
