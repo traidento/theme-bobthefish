@@ -622,13 +622,13 @@ function __bobthefish_colors -S -a color_scheme -d 'Define colors used by bobthe
       set -x color_vi_mode_insert           $base06 $colorfg --bold
       set -x color_vi_mode_visual           $base07 $colorfg --bold
 
-      set -x color_vagrant                  $base02 $colorfg --bold
-      set -x color_k8s                      $base02 $colorfg --bold
+      set -x color_vagrant                  $base02 $base08 --bold
+      set -x color_k8s                      $base02 $base08 --bold
       set -x color_aws_vault                $base0A $base0D --bold
       set -x color_aws_vault_expired        $base0A $base0B --bold
       set -x color_username                 $base02 $base0D --bold
       set -x color_hostname                 $base02 $base0D
-      set -x color_screen                   $base02 $colorfg --bold
+      set -x color_screen                   $base02 $base08 --bold
       set -x color_rvm                      $base09 $colorfg --bold
       set -x color_node                     $base09 $colorfg --bold
       set -x color_virtualfish              $base09 $colorfg --bold
