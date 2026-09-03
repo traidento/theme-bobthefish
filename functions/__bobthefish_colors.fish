@@ -530,7 +530,7 @@ function __bobthefish_colors -S -a color_scheme -d 'Define colors used by bobthe
       set -x color_hostname              $fg[3] $blue[2]
       set -x color_screen                $green[2] $fg[2] --bold
       set -x color_rvm                   $red[2] $bg[2] --bold
-      set -x color_nvm                   $green[1] $fg[2] --bold
+      set -x color_node                  $green[1] $fg[2] --bold
       set -x color_virtualfish           $blue[2] $fg[2] --bold
       set -x color_virtualgo             $blue[2] $fg[2] --bold
       set -x color_desk                  $blue[2] $fg[2] --bold
@@ -934,7 +934,7 @@ function __bobthefish_colors -S -a color_scheme -d 'Define colors used by bobthe
       set -x color_aws_vault               $deep_blue $pale_gold --bold
       set -x color_aws_vault_expired       $deep_blue $red --bold
       set -x color_rvm                     $pink $darker_grey --bold
-      set -x color_nvm                     $bright_green $darker_grey --bold
+      set -x color_node                    $bright_green $darker_grey --bold
       set -x color_virtualfish             $cyan $darker_grey --bold
       set -x color_virtualgo               $light_green $darker_grey --bold
       set -x color_desk                    $light_grey $darker_grey --bold
