@@ -67,11 +67,14 @@ end
 
 function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish)'
     set -l flags $argv[1]
+    set -l flags_padding ''
     [ -n "$flags" ]
     and set -l flags_padding ' '
 
+    set -l tag_padding ''
     set -l tag (command git describe --tags --exact-match 2>/dev/null)
-    and echo "$tag_glyph$tag "
+    and echo "$tag_glyph$tag"
+    and set -l tag_padding ' '
 
     set -l branch (command git symbolic-ref --quiet --short HEAD 2>/dev/null)
     and begin
@@ -80,7 +83,7 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
 
         [ "$theme_display_git_master_branch" != yes -a "$theme_display_git_default_branch" != yes ]
         and contains $branch $theme_git_default_branches
-        and echo "$branch_glyph$flags"
+        and echo "$tag_padding$branch_glyph$flags"
         and return
 
         # truncate the middle of the branch name, but only if it's 25+ characters
@@ -88,7 +91,7 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
         [ "$theme_use_abbreviated_branch_name" = yes ]
         and set truncname (string replace -r '^(.{17}).{3,}(.{5})$' "\$1…\$2" $branch)
 
-        echo "$branch_glyph$truncname$flags_padding$flags"
+        echo "$tag_padding$branch_glyph$truncname$flags_padding$flags"
         and return
     end
 
@@ -97,6 +100,9 @@ function __bobthefish_git_branch -S -d 'Get the current git branch (or commitish
         set -l branch (command git rev-parse --short HEAD 2>/dev/null)
         echo "$detached_glyph$branch$flags_padding$flags"
     else
+        [ -n "$flags" ]
+        and echo "$tag_padding"
+
         echo "$flags"
     end
 end
